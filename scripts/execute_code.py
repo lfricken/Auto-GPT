@@ -86,3 +86,21 @@ def execute_shell(command_line):
     os.chdir(current_dir)
 
     return output
+def execute_shell_popen(command_line):
+
+    current_dir = os.getcwd()
+
+    if not WORKSPACE_FOLDER in current_dir: # Change dir into workspace if necessary
+        work_dir = os.path.join(os.getcwd(), WORKSPACE_FOLDER)
+        os.chdir(work_dir)
+
+    print (f"Executing command popen '{command_line}' in working directory '{os.getcwd()}'")
+
+    do_not_show_output = subprocess.DEVNULL
+    process = subprocess.Popen(command_line, shell=True, stdout=do_not_show_output, stderr=do_not_show_output)
+
+    # Change back to whatever the prior working dir was
+
+    os.chdir(current_dir)
+
+    return f"Subprocess started with PID:'{str(process.pid)}'"
