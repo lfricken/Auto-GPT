@@ -17,6 +17,7 @@ def get_prompt():
     prompt_generator.add_constraint("If you are unsure how you previously did something or want to recall past events, thinking about similar events will help you remember.")
     prompt_generator.add_constraint("No user assistance")
     prompt_generator.add_constraint('Exclusively use the commands listed in double quotes e.g. "command name"')
+    prompt_generator.add_constraint('Use subprocesses for commands that will not terminate within a few minutes')
 
     # Define the command list
     commands = [
