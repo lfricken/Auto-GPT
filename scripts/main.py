@@ -17,6 +17,7 @@ import argparse
 from logger import logger
 import logging
 from prompt import get_prompt
+import keyboard
 
 cfg = Config()
 
@@ -380,6 +381,17 @@ def main():
                 speak.say_text(f"I want to execute {command_name}")
         except Exception as e:
             logger.error("Error: \n", str(e))
+
+        # allow user to interupt continuous_mode and next_action_count
+        if cfg.continuous_mode or next_action_count > 0:
+            if keyboard.is_pressed('n'):
+                logger.typewriter_log(
+                    "-=-=-=-=-=-=-= CONTINUOUS MODE INTERRUPTED -=-=-=-=-=-=-=",
+                    Fore.MAGENTA,
+                    "")
+                cfg.continuous_mode = False
+                next_action_count = 0
+                break
 
         if not cfg.continuous_mode and next_action_count == 0:
             ### GET USER AUTHORIZATION TO EXECUTE COMMAND ###
