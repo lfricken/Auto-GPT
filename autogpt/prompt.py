@@ -153,6 +153,13 @@ def get_prompt() -> str:
     return prompt_generator.generate_prompt_string()
 
 
+def get_full_auto_args():
+    full_auto_args = CFG.full_auto.split(";")
+    name = full_auto_args[0]
+    role = full_auto_args[1]
+    goals = full_auto_args[2:]
+    return name, role, goals
+
 def construct_prompt() -> str:
     """Construct the prompt for the AI to respond to
 
@@ -160,7 +167,16 @@ def construct_prompt() -> str:
         str: The prompt string
     """
     config = AIConfig.load(CFG.ai_settings_file)
-    if CFG.skip_reprompt and config.ai_name:
+    if CFG.full_auto != "":
+        logger.typewriter_log("FULL AUTO MODE", Fore.RED, "")
+
+        name, role, goals = get_full_auto_args(CFG.full_auto)
+        config.ai_name = name
+
+        logger.typewriter_log("Name :", Fore.GREEN, config.ai_name)
+        logger.typewriter_log("Role :", Fore.GREEN, config.ai_role)
+        logger.typewriter_log("Goals:", Fore.GREEN, f"{config.ai_goals}")
+    elif CFG.skip_reprompt and config.ai_name:
         logger.typewriter_log("Name :", Fore.GREEN, config.ai_name)
         logger.typewriter_log("Role :", Fore.GREEN, config.ai_role)
         logger.typewriter_log("Goals:", Fore.GREEN, f"{config.ai_goals}")
