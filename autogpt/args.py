@@ -63,6 +63,13 @@ def parse_arguments() -> None:
         help="Specifies which ai_settings.yaml file to use, will also automatically"
         " skip the re-prompt.",
     )
+    parser.add_argument(
+        "--full-auto",
+        "-f",
+        dest="full_auto",
+        help="Sets this autogpt instance to be on full auto mode with the given name"
+        " and goals separated by semicolons.",
+    )
     args = parser.parse_args()
 
     if args.debug:
@@ -135,3 +142,8 @@ def parse_arguments() -> None:
 
     if args.browser_name:
         CFG.selenium_web_browser = args.browser_name
+
+    if args.full_auto:
+        CFG.full_auto = args.full_auto
+        CFG.set_continuous_mode(True)
+        CFG.set_continuous_limit(10) #TODO figure out what number for this

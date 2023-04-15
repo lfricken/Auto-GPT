@@ -2,7 +2,23 @@
 from typing import List, Tuple, Union
 from autogpt.llm_utils import create_chat_completion
 from autogpt.config.config import Singleton
+import os
+import sys
+import subprocess
 
+
+def open_terminal_and_run_script_new_process(script_path):
+    if sys.platform.startswith("win"):
+        cmd = f'start cmd.exe /k "python {script_path}"'
+    elif sys.platform.startswith("darwin"):
+        cmd = f'osascript -e \'tell application "Terminal" to do script "python {script_path}"\''
+    elif sys.platform.startswith("linux"):
+        cmd = f'x-terminal-emulator -e "python {script_path}"'
+    else:
+        raise OSError("Unsupported platform")
+
+    process = subprocess.Popen(cmd, shell=True)
+    return process
 
 class AgentManager(metaclass=Singleton):
     """Agent manager for managing GPT agents"""
@@ -25,6 +41,9 @@ class AgentManager(metaclass=Singleton):
         Returns:
             The key of the new agent
         """
+
+        open_terminal_and_run_script_new_process("-m autogpt")
+
         messages = [
             {"role": "user", "content": prompt},
         ]

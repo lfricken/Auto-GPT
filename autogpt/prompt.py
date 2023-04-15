@@ -51,11 +51,6 @@ def get_prompt() -> str:
             {"url": "<url>", "question": "<what_you_want_to_find_on_website>"},
         ),
         (
-            "Start GPT Agent",
-            "start_agent",
-            {"name": "<name>", "task": "<short_task_desc>", "prompt": "<prompt>"},
-        ),
-        (
             "Message GPT Agent",
             "message_agent",
             {"key": "<key>", "message": "<message>"},
@@ -104,6 +99,17 @@ def get_prompt() -> str:
                 {"command_line": "<command_line>"}
             ),
         )
+
+    # avoid full_auto spawning off more (for now)
+    if cfg.full_auto != "":
+        commands.append(
+            (
+                "Start GPT Agent",
+                "start_agent",
+                {"name": "<name>", "task": "<short_task_desc>", "prompt": "<prompt>"},
+            ),
+        )
+
 
     # Add these command last.
     commands.append(
